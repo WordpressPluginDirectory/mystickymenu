@@ -3,7 +3,7 @@
 Plugin Name: myStickymenu
 Plugin URI: https://premio.io/
 Description: Simple sticky (fixed on top) menu implementation for navigation menu and Welcome bar for announcements and promotion. After install go to Settings / myStickymenu and change Sticky Class to .your_navbar_class or #your_navbar_id.
-Version: 2.6.6
+Version: 2.6.7
 Author: Premio
 Author URI: https://premio.io/downloads/mystickymenu/
 Text Domain: mystickymenu
@@ -12,7 +12,7 @@ License: GPLv2 or later
 */
 
 defined('ABSPATH') or die("Cannot access pages directly.");
-define( 'MYSTICKY_VERSION', '2.6.6' );
+define( 'MYSTICKY_VERSION', '2.6.7' );
 define('MYSTICKYMENU_URL', plugins_url('/', __FILE__));  // Define Plugin URL
 define('MYSTICKYMENU_PATH', plugin_dir_path(__FILE__));  // Define Plugin Directory Path
 
@@ -1509,6 +1509,8 @@ class MyStickyMenuBackend
 				}
 			}
 		}
+		
+		$download_file_url = plugins_url('mystickymenu-contact-leads.php?download_file=mystickybar_contact_leads.csv',__FILE__);
 		?>
 	<!-- /**/ */ -->
 	<div class="wrap mystickymenu-contact-wrap">
@@ -1520,7 +1522,7 @@ class MyStickyMenuBackend
 				<div class="mystickymenu-btnmbox">
 					<div class="mystickymenu-btnbx">
 						<strong><?php esc_html_e('Download & Export All Subscriber to CSV file:','mystickymenu' );?> </strong>
-							<a href="<?php echo plugins_url('mystickymenu-contact-leads.php?download_file=mystickybar_contact_leads.csv',__FILE__); ?>" class="wpappp_buton" id="wpappp_export_to_csv" value="Export to CSV" href="#"><?php esc_html_e('Download & Export to CSV', 'mystickymenu' );?></a>
+							<a href="<?php echo wp_nonce_url($download_file_url,'MSB_file_download', 'mystickymenu_nonce'); ?>" class="wpappp_buton" id="wpappp_export_to_csv" value="Export to CSV" href="#"><?php esc_html_e('Download & Export to CSV', 'mystickymenu' );?></a>
 					</div>
 					<div class="mystickymenu-btnbx">
 						<strong><?php esc_html_e('Delete All Subscibers from Database:','mystickymenu');?> </strong>
