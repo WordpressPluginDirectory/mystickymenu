@@ -3,7 +3,7 @@
 Plugin Name: myStickymenu
 Plugin URI: https://premio.io/
 Description: Simple sticky (fixed on top) menu implementation for navigation menu and Welcome bar for announcements and promotion. After install go to Settings / myStickymenu and change Sticky Class to .your_navbar_class or #your_navbar_id.
-Version: 2.6.7
+Version: 2.6.8
 Author: Premio
 Author URI: https://premio.io/downloads/mystickymenu/
 Text Domain: mystickymenu
@@ -12,7 +12,7 @@ License: GPLv2 or later
 */
 
 defined('ABSPATH') or die("Cannot access pages directly.");
-define( 'MYSTICKY_VERSION', '2.6.7' );
+define( 'MYSTICKY_VERSION', '2.6.8' );
 define('MYSTICKYMENU_URL', plugins_url('/', __FILE__));  // Define Plugin URL
 define('MYSTICKYMENU_PATH', plugin_dir_path(__FILE__));  // Define Plugin Directory Path
 
@@ -180,7 +180,7 @@ class MyStickyMenuBackend
 		}
 		check_ajax_referer( 'mystickymenu', 'wpnonce' );
 		if( isset($_POST['wpnonce']) ){
-			$bulks = isset($_POST['bulks']) ? $_POST['bulks'] : array();
+			$bulks = isset($_POST['bulks']) ? esc_attr($_POST['bulks']) : array();
 			foreach( $bulks as $key => $bulk ){
 				$ID = sanitize_text_field($bulk);
 				$table = $wpdb->prefix . 'mystickymenu_contact_lists';
@@ -691,7 +691,7 @@ class MyStickyMenuBackend
 								<label for="myfixed_textcolor" class="mysticky_title myssticky-remove-hand"><?php _e("Sticky Text Color", 'mystickymenu')?></label>
 							</td>
 							<td>
-								<input type="text" id="myfixed_textcolor" name="mysticky_option_name[myfixed_textcolor]" class="my-color-field" data-alpha="true" value="<?php echo (isset($mysticky_options['myfixed_textcolor'])) ? $mysticky_options['myfixed_textcolor'] : '';?>" />
+								<input type="text" id="myfixed_textcolor" name="mysticky_option_name[myfixed_textcolor]" class="my-color-field" data-alpha="true" value="<?php echo (isset($mysticky_options['myfixed_textcolor'])) ? esc_attr($mysticky_options['myfixed_textcolor']) : '';?>" />
 
 							</td>
 						</tr>
@@ -728,7 +728,7 @@ class MyStickyMenuBackend
 						<div class="mystickymenu-input-section mystickymenu-page-target-wrap">
 							<div class="mysticky-welcomebar-setting-content-right">
 								<div class="mysticky-page-options" id="mysticky-welcomebar-page-options">
-									<?php $page_option = (isset($mysticky_options['mysticky_page_settings'])) ? $mysticky_options['mysticky_page_settings'] : array();
+									<?php $page_option = (isset($mysticky_options['mysticky_page_settings'])) ? esc_attr($mysticky_options['mysticky_page_settings']) : array();
 									$url_options = array(
 										'page_contains' => 'pages that contain',
 										'page_has_url' => 'a specific page',
@@ -995,8 +995,6 @@ class MyStickyMenuBackend
 				if( isset($widgets) && $widgets == '' ){
 					$is_first_widget = 1;
 				}
-				
-				
 				
 				$welcomebars_widgets[0] = 'Bar #0';
 				update_option( 'mystickymenu-welcomebars', $welcomebars_widgets );
@@ -1587,12 +1585,12 @@ class MyStickyMenuBackend
 							foreach ( $result as $res ) { ?>
 								<tr>
 									<td><input id="cb-select-80" class="cb-select-blk" type="checkbox" name="delete_message[]" value="<?php echo esc_attr($res->ID);?>"></td>
-									<td><a href="<?php echo esc_url(admin_url( 'admin.php?page=my-sticky-menu-leads&id=' . $res->ID ));?>"><?php echo $res->ID;?></a></td>
-									<td><a href="<?php echo esc_url(admin_url( 'admin.php?page=my-sticky-menu-leads&id=' . $res->ID ));?>"><?php echo $res->widget_name;?></a></td>
-									<td><?php echo $res->contact_name;?></td>
-									<td><?php echo $res->contact_email;?></td>
-									<td><?php echo $res->contact_phone;?></td>
-									<td><?php echo ( isset($res->message_date) ) ? $res->message_date : '-' ;?></td>
+									<td><a href="<?php echo esc_url(admin_url( 'admin.php?page=my-sticky-menu-leads&id=' . $res->ID ));?>"><?php echo esc_html($res->ID);?></a></td>
+									<td><a href="<?php echo esc_url(admin_url( 'admin.php?page=my-sticky-menu-leads&id=' . $res->ID ));?>"><?php echo esc_html($res->widget_name);?></a></td>
+									<td><?php echo esc_html($res->contact_name);?></td>
+									<td><?php echo esc_html($res->contact_email);?></td>
+									<td><?php echo esc_html($res->contact_phone);?></td>
+									<td><?php echo ( isset($res->message_date) ) ? esc_html($res->message_date) : '-' ;?></td>
 									<td>
 										<?php if ( $res->page_link) :?>
 										<a class="external-link" href="<?php echo esc_url($res->page_link);?>" target="_blank"><span class="dashicons dashicons-external"></span></a>
@@ -1600,7 +1598,7 @@ class MyStickyMenuBackend
 									</td> 
 									
 									<td>
-										<input type="button" data-delete="<?php echo $res->ID;?>" class="mystickymenu-delete-entry" value="<?php esc_attr_e('Delete', 'mystickymenu');?>" />
+										<input type="button" data-delete="<?php echo esc_attr($res->ID);?>" class="mystickymenu-delete-entry" value="<?php esc_attr_e('Delete', 'mystickymenu');?>" />
 									</td>
 								</tr>
 							<?php }
@@ -1759,7 +1757,7 @@ class MyStickyMenuFrontend
 				echo '#mysticky-nav .myfixed { margin:0 auto; float:none; border:0px; background:none; max-width:100%; }';
 			}
 			if ( isset( $mysticky_options['myfixed_cssstyle'] ) && $mysticky_options['myfixed_cssstyle'] != '' )  {
-				echo $mysticky_options ['myfixed_cssstyle'];
+				echo esc_attr($mysticky_options ['myfixed_cssstyle']);
 			}
 			echo '</style>';
 			$template_name = get_template();
@@ -1901,9 +1899,9 @@ class MyStickyMenuFrontend
 		
 		
 
-		$myfixed_disable_scroll_down = isset($mysticky_options['myfixed_disable_scroll_down']) ? $mysticky_options['myfixed_disable_scroll_down'] : 'false';
-		$mystickyTransition = isset($mysticky_options['myfixed_fade']) ? $mysticky_options['myfixed_fade'] : 'fade';
-		$mystickyDisableLarge = isset($mysticky_options['myfixed_disable_large_screen']) ? $mysticky_options['myfixed_disable_large_screen'] : '0';
+		$myfixed_disable_scroll_down = isset($mysticky_options['myfixed_disable_scroll_down']) ? esc_attr($mysticky_options['myfixed_disable_scroll_down']) : 'false';
+		$mystickyTransition = isset($mysticky_options['myfixed_fade']) ? esc_attr($mysticky_options['myfixed_fade']) : 'fade';
+		$mystickyDisableLarge = isset($mysticky_options['myfixed_disable_large_screen']) ? esc_attr($mysticky_options['myfixed_disable_large_screen']) : '0';
 
 		$mystickyClass = ( $mysticky_options['mysticky_class_id_selector'] != 'custom') ? '.menu-' . $mysticky_options['mysticky_class_id_selector'] .'-container' : $mysticky_options['mysticky_class_selector'];
 		
@@ -1983,8 +1981,8 @@ class MyStickyMenuFrontend
 		$mysticky_disable_at_archive = isset($mysticky_options['mysticky_disable_at_archive']);
 		$mysticky_disable_at_search = isset($mysticky_options['mysticky_disable_at_search']);
 		$mysticky_disable_at_404 = isset($mysticky_options['mysticky_disable_at_404']);
-		$mysticky_enable_at_pages = isset($mysticky_options['mysticky_enable_at_pages']) ? $mysticky_options['mysticky_enable_at_pages'] : '';
-		$mysticky_enable_at_posts = isset($mysticky_options['mysticky_enable_at_posts']) ? $mysticky_options['mysticky_enable_at_posts'] : '';
+		$mysticky_enable_at_pages = isset($mysticky_options['mysticky_enable_at_pages']) ? esc_attr($mysticky_options['mysticky_enable_at_pages']) : '';
+		$mysticky_enable_at_posts = isset($mysticky_options['mysticky_enable_at_posts']) ? esc_attr($mysticky_options['mysticky_enable_at_posts']) : '';
 
 		// Trim input to ignore empty spaces
 		$mysticky_enable_at_pages_exp = array_map('trim', explode(',', $mysticky_enable_at_pages));
@@ -2074,7 +2072,7 @@ class MyStickyMenuFrontend
 		$errors = array();
 		$element_widget_no = $_POST['widget_id'];
 
-		$element_widget_name = (isset($stickymenus_widgets[$element_widget_no]) && $stickymenus_widgets[$element_widget_no] != '' ) ? $stickymenus_widgets[$element_widget_no]  : '';
+		$element_widget_name = (isset($stickymenus_widgets[$element_widget_no]) && $stickymenus_widgets[$element_widget_no] != '' ) ? esc_attr($stickymenus_widgets[$element_widget_no])  : '';
 
 		$flag = true;
 		if( isset($element_widget_name) && $element_widget_name != ''){
@@ -2103,7 +2101,7 @@ class MyStickyMenuFrontend
 
 				$params["widget_name"]  = esc_sql( sanitize_text_field($element_widget_name));
 				$params["message_date"] = date('Y-m-d H:i:s');
-				$params["contact_email"] = (isset($params["contact_email"]) && $params["contact_email"] != '' ) ? $params["contact_email"] : '';
+				$params["contact_email"] = (isset($params["contact_email"]) && $params["contact_email"] != '' ) ? esc_attr($params["contact_email"]) : '';
 				
 				if( isset($params) && !empty($params) ){
 					$wpdb->insert($contact_lists_table, $params);
