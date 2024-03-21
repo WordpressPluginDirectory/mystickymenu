@@ -11,7 +11,7 @@
 		<p>Grow your WordPress websites with our plugins</p>
     </div>
     <div class="updates-form-form-right">
-        <div class="update-title">Be first</div>
+        <div class="update-title">Be the first to know product updates, tips & discounts</div>
         <p>Be among the first to know about our latest features & what we're working on. Plus insider offers & flash sales</p>
         <div class="updates-form">
             <div class="update-form-input">

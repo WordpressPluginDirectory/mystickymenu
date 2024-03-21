@@ -3,7 +3,7 @@
 Plugin Name: myStickymenu
 Plugin URI: https://premio.io/
 Description: Simple sticky (fixed on top) menu implementation for navigation menu and Welcome bar for announcements and promotion. After install go to Settings / myStickymenu and change Sticky Class to .your_navbar_class or #your_navbar_id.
-Version: 2.6.8
+Version: 2.6.9
 Author: Premio
 Author URI: https://premio.io/downloads/mystickymenu/
 Text Domain: mystickymenu
@@ -12,7 +12,7 @@ License: GPLv2 or later
 */
 
 defined('ABSPATH') or die("Cannot access pages directly.");
-define( 'MYSTICKY_VERSION', '2.6.8' );
+define( 'MYSTICKY_VERSION', '2.6.9' );
 define('MYSTICKYMENU_URL', plugins_url('/', __FILE__));  // Define Plugin URL
 define('MYSTICKYMENU_PATH', plugin_dir_path(__FILE__));  // Define Plugin Directory Path
 
@@ -313,15 +313,16 @@ class MyStickyMenuBackend
             if($option === false) {
                 add_option("mystickymenu_intro_box", "show");
             }
-			
-			$welcomebar_widgets = get_option("mysticky_option_welcomebar");
-			if ( $welcomebar_widgets ) {
-				wp_redirect( admin_url( 'admin.php?page=my-stickymenu-welcomebar' ) ) ;
-			} else {
-				wp_redirect( admin_url( 'admin.php?page=my-stickymenu-welcomebar&widget=0' ) ) ;
+			if(!defined( 'DOING_AJAX' )) {
+				$welcomebar_widgets = get_option("mysticky_option_welcomebar");
+				if ( $welcomebar_widgets ) {
+					wp_redirect( admin_url( 'admin.php?page=my-stickymenu-welcomebar' ) ) ;
+				} else {
+					wp_redirect( admin_url( 'admin.php?page=my-stickymenu-welcomebar&widget=0' ) ) ;
+				}
+				
+				exit;
 			}
-			
-			exit;
 		}
 	}
 
@@ -333,6 +334,9 @@ class MyStickyMenuBackend
 
 		wp_enqueue_style('mystickymenuAdminStyle', plugins_url('/css/mystickymenu-admin.css', __FILE__), array(), MYSTICKY_VERSION );
 		wp_style_add_data( 'mystickymenuAdminStyle', 'rtl', 'replace' );
+		wp_enqueue_style('mystickymenuHelpStyle', plugins_url('/css/mystickymenu-help.css', __FILE__), array(), MYSTICKY_VERSION );
+		wp_style_add_data( 'mystickymenuHelpStyle', 'rtl', 'replace' );
+		
 		wp_enqueue_style( 'wp-color-picker' );				
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
 		wp_enqueue_style('jquery-ui');
@@ -452,6 +456,14 @@ class MyStickyMenuBackend
 	}
 
 	public function create_admin_page(){
+		
+		require_once MYSTICKYMENU_PATH . 'help.php';	
+
+		$is_shown = get_option("mystickymenu_update_message");
+        if($is_shown == 1) {
+			include_once MYSTICKYMENU_PATH . '/update.php';
+			return;
+		} 		
 
 		$upgarde_url = admin_url("admin.php?page=my-stickymenu-upgrade");
 		// Set class property
@@ -972,7 +984,7 @@ class MyStickyMenuBackend
 	
 	
 	public function mystickystickymenu_admin_welcomebar_page() {
-		//require_once MYSTICKYMENU_PATH . 'help.php';
+		require_once MYSTICKYMENU_PATH . 'help.php';
 
 		$is_shown = get_option("mystickymenu_update_message");
         if($is_shown == 1) {
@@ -1133,7 +1145,15 @@ class MyStickyMenuBackend
 		require_once MYSTICKYMENU_PATH . 'mystickymenu-review-popup.php';
 	}
 	
-	public function mystickystickymenu_admin_new_welcomebar_page() {	
+	public function mystickystickymenu_admin_new_welcomebar_page() {
+		require_once MYSTICKYMENU_PATH . 'help.php';	
+		
+		$is_shown = get_option("mystickymenu_update_message");
+        if($is_shown == 1) {
+			include_once MYSTICKYMENU_PATH . '/update.php';
+			return;
+		} 
+		
 		$welcomebars_widgets = get_option( 'mysticky_option_welcomebar' );
 		if( isset($welcomebars_widgets) && !empty($welcomebars_widgets)){
 			?>
@@ -1153,28 +1173,42 @@ class MyStickyMenuBackend
 	}
 	
 	public function mystickymenu_recommended_plugins() {
-		include_once 'recommended-plugins.php';
+		$is_shown = get_option("mystickymenu_update_message");
+        if($is_shown == 1) {
+			include_once MYSTICKYMENU_PATH . '/update.php';			
+		} else {
+			include_once 'recommended-plugins.php';
+		}
+		require_once MYSTICKYMENU_PATH . 'help.php';		
 	}
 	
 	public function mystickymenu_admin_upgrade_to_pro() {
-        $pro_url = "https://go.premio.io/checkount/?edd_action=add_to_cart&download_id=2199&edd_options[price_id]=";
-        ?>
-		<style>
-            div#wpcontent {
-                background: rgba(101,114,219,1);
-                background: -moz-linear-gradient(-45deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
-                background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(101,114,219,1)), color-stop(67%, rgba(238,134,198,1)), color-stop(100%, rgba(238,134,198,1)));
-                background: -webkit-linear-gradient(-45deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
-                background: -o-linear-gradient(-45deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
-                background: -ms-linear-gradient(-45deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
-                background: linear-gradient(135deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6572db', endColorstr='#ee86c6', GradientType=1 );
-            }
-        </style>
-		<div id="mystickymenu" class="wrap mystickymenu">
-			<?php include_once "upgrade-to-pro.php"; ?>
-        </div>
-        <?php
+		$is_shown = get_option("mystickymenu_update_message");
+        if($is_shown == 1) {
+			include_once MYSTICKYMENU_PATH . '/update.php';			
+		} else {
+		
+			$pro_url = "https://go.premio.io/checkount/?edd_action=add_to_cart&download_id=2199&edd_options[price_id]=";
+			?>
+			<style>
+				div#wpcontent {
+					background: rgba(101,114,219,1);
+					background: -moz-linear-gradient(-45deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
+					background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(101,114,219,1)), color-stop(67%, rgba(238,134,198,1)), color-stop(100%, rgba(238,134,198,1)));
+					background: -webkit-linear-gradient(-45deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
+					background: -o-linear-gradient(-45deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
+					background: -ms-linear-gradient(-45deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
+					background: linear-gradient(135deg, rgba(101,114,219,1) 0%, rgba(238,134,198,1) 67%, rgba(238,134,198,1) 100%);
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6572db', endColorstr='#ee86c6', GradientType=1 );
+				}
+			</style>
+			<div id="mystickymenu" class="wrap mystickymenu">
+				<?php include_once "upgrade-to-pro.php"; ?>
+			</div>
+			<?php
+		}
+		
+		require_once MYSTICKYMENU_PATH . 'help.php';		
 	}
 		
 	public function mysticky_default_options() {
@@ -1494,6 +1528,12 @@ class MyStickyMenuBackend
 
 	public function mystickymenu_admin_leads_page(){
 		global $wpdb;
+		require_once MYSTICKYMENU_PATH . 'help.php';
+		$is_shown = get_option("mystickymenu_update_message");
+        if($is_shown == 1) {
+			include_once MYSTICKYMENU_PATH . '/update.php';
+			return;
+		} 		
 		$where_search = '';
 		$table_name = $wpdb->prefix . "mystickymenu_contact_lists";
 		$elements_widgets = get_option( 'mystickymenu-welcomebars' );
