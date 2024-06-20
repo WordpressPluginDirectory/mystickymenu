@@ -3,7 +3,7 @@
 Plugin Name: myStickymenu
 Plugin URI: https://premio.io/
 Description: Simple sticky (fixed on top) menu implementation for navigation menu and Welcome bar for announcements and promotion. After install go to Settings / myStickymenu and change Sticky Class to .your_navbar_class or #your_navbar_id.
-Version: 2.6.9
+Version: 2.7.1
 Author: Premio
 Author URI: https://premio.io/downloads/mystickymenu/
 Text Domain: mystickymenu
@@ -12,7 +12,7 @@ License: GPLv2 or later
 */
 
 defined('ABSPATH') or die("Cannot access pages directly.");
-define( 'MYSTICKY_VERSION', '2.6.9' );
+define( 'MYSTICKY_VERSION', '2.7.1' );
 define('MYSTICKYMENU_URL', plugins_url('/', __FILE__));  // Define Plugin URL
 define('MYSTICKYMENU_PATH', plugin_dir_path(__FILE__));  // Define Plugin Directory Path
 
@@ -50,6 +50,7 @@ class MyStickyMenuBackend
 		
 		add_action( 'wp_ajax_mystickymenu_review_box', [$this, "mystickymenu_review_box"]);
 		add_action( 'wp_ajax_mystickymenu_review_box_message', [$this, "mystickymenu_review_box_message"]);
+        add_action( 'admin_init' , [$this, 'check_for_redirection']);
 	}
 	
 	
@@ -314,17 +315,27 @@ class MyStickyMenuBackend
                 add_option("mystickymenu_intro_box", "show");
             }
 			if(!defined( 'DOING_AJAX' )) {
-				$welcomebar_widgets = get_option("mysticky_option_welcomebar");
-				if ( $welcomebar_widgets ) {
-					wp_redirect( admin_url( 'admin.php?page=my-stickymenu-welcomebar' ) ) ;
-				} else {
-					wp_redirect( admin_url( 'admin.php?page=my-stickymenu-welcomebar&widget=0' ) ) ;
-				}
-				
-				exit;
+                add_option("msm_redirection", 1);
 			}
 		}
 	}
+
+    public function check_for_redirection()
+    {
+        if(!defined( 'DOING_AJAX' )) {
+            $status = get_option("msm_redirection");
+            if($status) {
+                delete_option("msm_redirection");
+                $welcomebar_widgets = get_option("mysticky_option_welcomebar");
+                if ($welcomebar_widgets) {
+                    wp_redirect(admin_url('admin.php?page=my-stickymenu-welcomebar'));
+                } else {
+                    wp_redirect(admin_url('admin.php?page=my-stickymenu-welcomebar&widget=0'));
+                }
+                exit;
+            }
+        }
+    }
 
     public function mysticky_admin_script($hook) {
 		
@@ -1012,7 +1023,30 @@ class MyStickyMenuBackend
 				update_option( 'mystickymenu-welcomebars', $welcomebars_widgets );
 				
 				$mysticky_option_welcomebar = $_POST['mysticky_option_welcomebar'];
-				$mysticky_option_welcomebar['mysticky_welcomebar_bar_text'] = wp_kses_post($_POST['mysticky_option_welcomebar']['mysticky_welcomebar_bar_text']);
+				$mysticky_option_welcomebar['mysticky_welcomebar_bar_text'] = wp_kses(stripslashes($_POST['mysticky_option_welcomebar']['mysticky_welcomebar_bar_text']) , [
+													'a' => array(
+														'href' => array(),
+														'title' => array(),
+														'rel' => array(),
+														'target' => array()
+													),
+													'br' => array(),
+													'em' => array(),
+													'u' => array(),
+													'strong' => array(),
+												]);
+				$mysticky_option_welcomebar['mysticky_welcomebar_thankyou_screen_text'] = wp_kses(stripslashes($_POST['mysticky_option_welcomebar']['mysticky_welcomebar_thankyou_screen_text']) , [
+													'a' => array(
+														'href' => array(),
+														'title' => array(),
+														'rel' => array(),
+														'target' => array()
+													),
+													'br' => array(),
+													'em' => array(),
+													'u' => array(),
+													'strong' => array(),
+												]);
 				$mysticky_option_welcomebar['mysticky_welcomebar_height'] = 60;
 				$mysticky_option_welcomebar['mysticky_welcomebar_device_desktop'] = 'desktop';
 				$mysticky_option_welcomebar['mysticky_welcomebar_device_mobile'] = 'mobile';
