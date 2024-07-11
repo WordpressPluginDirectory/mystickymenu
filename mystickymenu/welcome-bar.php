@@ -17,7 +17,7 @@ function mysticky_welcome_bar_backend() {
 	
 	$welcomebar['mysticky_welcomebar_bgtxtcolor'] = ( isset($welcomebar['mysticky_welcomebar_bgtxtcolor']) && $welcomebar['mysticky_welcomebar_bgtxtcolor'] != '' ) ? esc_attr($welcomebar['mysticky_welcomebar_bgtxtcolor']) : '#000000';
 	
-	$welcomebar['mysticky_welcomebar_bar_text'] = (isset($welcomebar['mysticky_welcomebar_bar_text']) && $welcomebar['mysticky_welcomebar_bar_text'] != '' ) ? esc_attr($welcomebar['mysticky_welcomebar_bar_text']) : '#000000';
+	$welcomebar['mysticky_welcomebar_bar_text'] = (isset($welcomebar['mysticky_welcomebar_bar_text']) && $welcomebar['mysticky_welcomebar_bar_text'] != '' ) ? esc_attr($welcomebar['mysticky_welcomebar_bar_text']) : '';
 	
 	$welcomebar['mysticky_welcomebar_btntxtcolor'] = (isset($welcomebar['mysticky_welcomebar_btntxtcolor']) && $welcomebar['mysticky_welcomebar_btntxtcolor'] != '' ) ? esc_attr($welcomebar['mysticky_welcomebar_btntxtcolor']) : '#ffffff';
 	
@@ -167,14 +167,26 @@ function mysticky_welcome_bar_backend() {
 						<div class="mysticky-welcomebar-setting-content-right">
 						<?php 
 							$settings = array(
-								'media_buttons' => false, 
+								'media_buttons' => false,
 								'textarea_name' => 'mysticky_option_welcomebar[mysticky_welcomebar_bar_text]',
-								'tinymce' => false,
-								'quicktags' => array(
-									'buttons' => 'strong,em,link'
-								)
+								'tinymce'       => array(
+													'toolbar1'      => 'bold,italic,underline,unlink',
+													'init_instance_callback' => 'function(editor){
+																				editor.on("keypress ExecCommand keyup", function(){
+																					var content = tinymce.activeEditor.getContent();
+																					var mysticky_bar_text_val = content.replace(/(?:\r\n|\r|\n)/g, "<br />");
+																					mysticky_bar_text_val = mysticky_bar_text_val.replace(/(?:onchange|onclick|onmouseover|onmouseout|onkeydown|onload\onerror|alert)/g, "");
+																					jQuery( ".mysticky-welcomebar-content .mysticky-welcomebar-static_text" ).html( mysticky_bar_text_val );
+																					
+																					jQuery( ".mysticky-welcomebar-fixed p" ).css( "font-size", jQuery("#mysticky_welcomebar_fontsize").val() + "px" );
+																					jQuery( ".mysticky-welcomebar-fixed p" ).css("color", jQuery("#mysticky_welcomebar_bgtxtcolor").val()  );
+
+																				});
+																			}'
+												),
+								'quicktags' => false,
 							);
-							wp_editor( stripslashes($welcomebar['mysticky_welcomebar_bar_text']), 'mysticky_bar_text', $settings );      
+							wp_editor( stripslashes($welcomebar['mysticky_welcomebar_bar_text']), 'mysticky_bar_text', $settings );     
 							// add more buttons to the html editor
 							function underline_tag_add_quicktags() {
 								if ( wp_script_is('quicktags') ){ ?>

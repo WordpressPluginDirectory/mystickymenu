@@ -3,7 +3,7 @@
 Plugin Name: myStickymenu
 Plugin URI: https://premio.io/
 Description: Simple sticky (fixed on top) menu implementation for navigation menu and Welcome bar for announcements and promotion. After install go to Settings / myStickymenu and change Sticky Class to .your_navbar_class or #your_navbar_id.
-Version: 2.7.1
+Version: 2.7.2
 Author: Premio
 Author URI: https://premio.io/downloads/mystickymenu/
 Text Domain: mystickymenu
@@ -12,7 +12,7 @@ License: GPLv2 or later
 */
 
 defined('ABSPATH') or die("Cannot access pages directly.");
-define( 'MYSTICKY_VERSION', '2.7.1' );
+define( 'MYSTICKY_VERSION', '2.7.2' );
 define('MYSTICKYMENU_URL', plugins_url('/', __FILE__));  // Define Plugin URL
 define('MYSTICKYMENU_PATH', plugin_dir_path(__FILE__));  // Define Plugin Directory Path
 
@@ -1023,7 +1023,10 @@ class MyStickyMenuBackend
 				update_option( 'mystickymenu-welcomebars', $welcomebars_widgets );
 				
 				$mysticky_option_welcomebar = $_POST['mysticky_option_welcomebar'];
-				$mysticky_option_welcomebar['mysticky_welcomebar_bar_text'] = wp_kses(stripslashes($_POST['mysticky_option_welcomebar']['mysticky_welcomebar_bar_text']) , [
+				
+				//$mysticky_welcomebar_bar_text = str_replace( 'amp;', '', $_POST['mysticky_option_welcomebar']['mysticky_welcomebar_bar_text'] );
+				$mysticky_welcomebar_bar_text = $_POST['mysticky_option_welcomebar']['mysticky_welcomebar_bar_text'];
+				$mysticky_option_welcomebar['mysticky_welcomebar_bar_text'] = wp_kses(htmlspecialchars_decode(stripslashes($mysticky_welcomebar_bar_text)) , [
 													'a' => array(
 														'href' => array(),
 														'title' => array(),
@@ -1034,8 +1037,9 @@ class MyStickyMenuBackend
 													'em' => array(),
 													'u' => array(),
 													'strong' => array(),
-												]);
-				$mysticky_option_welcomebar['mysticky_welcomebar_thankyou_screen_text'] = wp_kses(stripslashes($_POST['mysticky_option_welcomebar']['mysticky_welcomebar_thankyou_screen_text']) , [
+												]);				
+				$mysticky_welcomebar_thankyou_screen_text = str_replace( '&amp;', '&', $_POST['mysticky_option_welcomebar']['mysticky_welcomebar_thankyou_screen_text'] );
+				$mysticky_option_welcomebar['mysticky_welcomebar_thankyou_screen_text'] = wp_kses(htmlspecialchars_decode(stripslashes($mysticky_welcomebar_thankyou_screen_text)) , [
 													'a' => array(
 														'href' => array(),
 														'title' => array(),
