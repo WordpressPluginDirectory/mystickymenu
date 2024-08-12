@@ -3,7 +3,7 @@
 Plugin Name: myStickymenu
 Plugin URI: https://premio.io/
 Description: Simple sticky (fixed on top) menu implementation for navigation menu and Welcome bar for announcements and promotion. After install go to Settings / myStickymenu and change Sticky Class to .your_navbar_class or #your_navbar_id.
-Version: 2.7.4
+Version: 2.7.5
 Author: Premio
 Author URI: https://premio.io/downloads/mystickymenu/
 Text Domain: mystickymenu
@@ -12,7 +12,7 @@ License: GPLv2 or later
 */
 
 defined('ABSPATH') or die("Cannot access pages directly.");
-define( 'MYSTICKY_VERSION', '2.7.4' );
+define( 'MYSTICKY_VERSION', '2.7.5' );
 define('MYSTICKYMENU_URL', plugins_url('/', __FILE__));  // Define Plugin URL
 define('MYSTICKYMENU_PATH', plugin_dir_path(__FILE__));  // Define Plugin Directory Path
 
@@ -522,6 +522,19 @@ class MyStickyMenuBackend
 		$nonce = wp_create_nonce('mysticky_option_backend_update');
         $pro_url = "https://go.premio.io/?edd_action=add_to_cart&download_id=2199&edd_options[price_id]=";
 		
+		$mysticky_options['stickymenu_enable'] = isset($mysticky_options['stickymenu_enable']) ? $mysticky_options['stickymenu_enable'] : '';
+		$mysticky_options['myfixed_disable_scroll_down'] = isset($mysticky_options['myfixed_disable_scroll_down']) ? $mysticky_options['myfixed_disable_scroll_down'] : '';
+		$mysticky_options['disable_css'] = isset($mysticky_options['disable_css']) ? $mysticky_options['disable_css'] : '';
+		$mysticky_options['mysticky_disable_at_front_home'] = isset($mysticky_options['mysticky_disable_at_front_home']) ? $mysticky_options['mysticky_disable_at_front_home'] : '';
+		$mysticky_options['mysticky_disable_at_blog'] = isset($mysticky_options['mysticky_disable_at_blog']) ? $mysticky_options['mysticky_disable_at_blog'] : '';
+		$mysticky_options['mysticky_disable_at_page'] = isset($mysticky_options['mysticky_disable_at_page']) ? $mysticky_options['mysticky_disable_at_page'] : '';
+		$mysticky_options['mysticky_disable_at_tag'] = isset($mysticky_options['mysticky_disable_at_tag']) ? $mysticky_options['mysticky_disable_at_tag'] : '';
+		$mysticky_options['mysticky_disable_at_category'] = isset($mysticky_options['mysticky_disable_at_category']) ? $mysticky_options['mysticky_disable_at_category'] : '';
+		$mysticky_options['mysticky_disable_at_single'] = isset($mysticky_options['mysticky_disable_at_single']) ? $mysticky_options['mysticky_disable_at_single'] : '';
+		$mysticky_options['mysticky_disable_at_archive'] = isset($mysticky_options['mysticky_disable_at_archive']) ? $mysticky_options['mysticky_disable_at_archive'] : '';
+		$mysticky_options['mysticky_disable_at_search'] = isset($mysticky_options['mysticky_disable_at_search']) ? $mysticky_options['mysticky_disable_at_search'] : '';
+		$mysticky_options['mysticky_disable_at_404'] = isset($mysticky_options['mysticky_disable_at_404']) ? $mysticky_options['mysticky_disable_at_404'] : '';
+		
         $is_shown = get_option("mystickymenu_update_message");
         if($is_shown == 1) {
 			
@@ -621,7 +634,7 @@ class MyStickyMenuBackend
 								<p class="description mystuckymenu-class-id">
 									<span class="dashicons dashicons-info"></span>&nbsp;
 									<span>
-									<?php echo sprintf(__('Need help finding your ID/Class? Install <a href="%1\$s" target="_blank">CSS Peeper</a> to quickly get your navigation menu ID/Class. Here\'s a quick <a href="%2\$s" target="_blank">video <span class="dashicons dashicons-controls-play"></span></a> of how you can do it.', 'mystickymenu'), 'https://chrome.google.com/webstore/detail/css-peeper/mbnbehikldjhnfehhnaidhjhoofhpehk?hl=en', 'https://www.youtube.com/watch?v=uuNqSkBPnLU');?>	
+									<?php echo sprintf(__('Need help finding your ID/Class? Install <a href="%1$s" target="_blank">CSS Peeper</a> to quickly get your navigation menu ID/Class. Here\'s a quick <a href="%2$s" target="_blank">video <span class="dashicons dashicons-controls-play"></span></a> of how you can do it.', 'mystickymenu'), 'https://chrome.google.com/webstore/detail/css-peeper/mbnbehikldjhnfehhnaidhjhoofhpehk?hl=en', 'https://www.youtube.com/watch?v=uuNqSkBPnLU');?>	
 									</span>
 								</p>
 							</td>

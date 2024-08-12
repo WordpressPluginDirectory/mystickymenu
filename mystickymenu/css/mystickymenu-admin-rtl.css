@@ -400,13 +400,13 @@ input.button.button-secondary.confirm {
     background: #969696;
     border-color: #969696;
     text-transform: uppercase;
-    font-size: 26px;
+    font-size: 20px;
     padding-right: 23px;
     padding-left: 23px;
     float: left;
     color: white;
     margin-left: 10px;
-    height: 60px;
+    height: 40px;
     width: 200px;
     border-radius: 31px;
     font-weight: 600;
