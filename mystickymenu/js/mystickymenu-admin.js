@@ -125,17 +125,8 @@
 	    });
 		$( document ).on( 'click', '#add-date-schedule-option' ,function(){
 			$( '#mysticky-welcomebar-date-schedule-options').show();
-		});
-	    $( '.sticky-header-menu ul li a' ).on( 'click', function(){
-	    	if ( $( "#sticky-header-welcome-bar" ).is( ":visible" ) ) {
-	    		check_for_preview_pos();
-	    	}
-	    } );
-		jQuery(window).on('scroll', function(){
-			if ( $( "#sticky-header-welcome-bar" ).is( ":visible" ) ) {
-	    		check_for_preview_pos();
-	    	}
-		});
+		});	    
+		
 		/*Mysticky page target*/
 		var mysticky_total_page_option = 0;
 		var mysticky_page_option_content = "";
@@ -532,66 +523,6 @@
 	    });
 	});
 
-
-	/* Preview section part maintain sticky using "check_for_preview_pos"  function */
-
-	function check_for_preview_pos() {
-
-		var $window = $(window);
-		var windowsize = $window.width();
-		
-		// var windowheight = $window.height() * 0.7;
-		// alert(windowheight);
-
-		// jQuery(".mysticky-welcomebar-full-screen-preview-body .mysticky-welcomebar-preview-screen").css("height", windowheight);
-		
-		var mysticky_welcomebar_form_pos = $( '#sticky-header-welcome-bar' ).offset().top;
-		if($(".show-on-apper").length && $(".mysticky-welcomebar-setting-right").length) {
-			var topPos = $(".show-on-apper").offset().top - $(window).scrollTop() - 750;
-			if (topPos < 0) {
-				topPos = Math.abs(topPos);
-				jQuery(".mysticky-welcomebar-setting-right").css("margin-top", ((-1)*topPos)+"px");
-			} else {
-				jQuery(".mysticky-welcomebar-setting-right").css("margin-top", "0");
-			}
-		}
-		
-		
-		var position_screen = (isRtl == 1 ) ? 'left' : 'right';
-
-		if ( ( mysticky_welcomebar_form_pos + 32 ) < $(window).scrollTop() ) {
-			$( '.mysticky-welcomebar-setting-right' ).css( 'position', 'fixed' );
-			$( '.mysticky-welcomebar-setting-right' ).css( position_screen, '40px' );
-
-			if ( windowsize < 1181 && windowsize > 768 && position_screen == 'right' ) {
-				$( '.mysticky-welcomebar-setting-right' ).css( position_screen, '30px' );
-
-			}else if ( windowsize <= 768 && position_screen == 'right' ) {
-				$( '.mysticky-welcomebar-setting-right' ).css( position_screen, '25px' );
-			}
-
-			if ( windowsize < 1181 && windowsize > 768 && position_screen == 'left') {
-				$( '.mysticky-welcomebar-setting-right' ).css( position_screen, '30px' );
-			}else if ( windowsize <= 768 && position_screen == 'left') {
-				$( '.mysticky-welcomebar-setting-right' ).css( position_screen, '25px' );
-			}
-		} else {
-			$( '.mysticky-welcomebar-setting-right' ).css( 'position', 'absolute' );
-			$( '.mysticky-welcomebar-setting-right' ).css( position_screen, '20px' );
-
-			if ( windowsize < 1181 && position_screen == 'right') {
-				$( '.mysticky-welcomebar-setting-right' ).css( position_screen, '10px' );
-			}
-
-			if ( windowsize < 1181 && position_screen == 'left') {
-				$( '.mysticky-welcomebar-setting-right' ).css( position_screen, '10px' );
-			}
-		}
-
-
-	}
-
-
 	jQuery(document).on("click",".mystickymenu-delete-widget",function(e){
 		e.preventDefault();
 
@@ -869,9 +800,9 @@
 		$( 'input#save_welcome_bar' ).val('1');
 		$( 'input[name="mysticky_option_welcomebar[mysticky_welcomebar_enable]"]' ).prop( 'checked',true );
 		if(clickFrom == 'save_dashboard_button'){
-			$( '.mysticky-welcomebar-submit input.save_view_dashboard' ).trigger('click');
+			$( '.mystickybar-tabs-buttons button.save_view_dashboard' ).trigger('click');
 		}else{
-			$( '.mysticky-welcomebar-submit input.welcombar_save' ).trigger('click');
+			$( '.mystickybar-tabs-buttons button.welcombar_save' ).trigger('click');
 		}
 	});
 
@@ -884,9 +815,9 @@
 		$( 'input#save_welcome_bar' ).val('1');
 
 		if(clickFrom == 'save_dashboard_button'){
-			$( '.mysticky-welcomebar-submit input.save_view_dashboard' ).trigger('click');
+			$( '.mystickybar-tabs-buttons button.save_view_dashboard' ).trigger('click');
 		}else{
-			$( '.mysticky-welcomebar-submit input.welcombar_save' ).trigger('click');
+			$( '.mystickybar-tabs-buttons button.welcombar_save' ).trigger('click');
 		}
 	});
 
@@ -1049,7 +980,7 @@
 	});
 
 	jQuery(document).on("click",".save_change",function(){
-		$( '.mysticky-welcomebar-submit input.welcombar_save' ).trigger('click');
+		$( '.mystickybar-tabs-buttons button.welcombar_save' ).trigger('click');
 	});
 
 	jQuery(document).on( 'change','#mysticky_welcomebar_show_success_message', function(){
@@ -1211,6 +1142,77 @@
 		});
 		$(".welcomebar-minimise-screen-btn").click(function(){
 			$('.mysticky-welcomebar-preview-screen').removeAttr("style");
+		});
+		
+		/*
+		 * Bar Tab
+		 */
+		$( document ).on( 'click', '.mystickybar-tabs .mystickybar-tab', function(){
+			let tab 	= $(this).data( 'tab' );
+			let tabid 	= $(this).data( 'tab-id' );
+			
+			$( '.mystickybar-tabs .mystickybar-tab').removeClass( 'mystickybar-tab-active' );
+			$( this).addClass( 'mystickybar-tab-active mystickybar-tab-completed');
+			$( '.mystickybar-tab-content').removeClass('mystickybar-active active');
+			$( '#' + tabid).addClass('mystickybar-active active');
+			$( '#mystickybar-widget-body-tab .mystickybar-preview-section').show();
+			if( tab == 'first') {
+				$( '.mystickybar-back-button').addClass( 'disabled' );
+				$( '.mystickybar-next-button').removeClass( 'disabled' );
+				
+				$('#mystickybar-display-rules').removeClass( 'mystickybar-tab-completed' );
+				$('#mystickybar-poptin-popups').removeClass( 'mystickybar-tab-completed' );
+			} else if( tab == 'middle' ) {
+				$( '.mystickybar-back-button').removeClass( 'disabled' );
+				$( '.mystickybar-next-button').removeClass( 'disabled' );				
+				$('#mystickybar-poptin-popups').removeClass( 'mystickybar-tab-completed' );
+			} else {
+				$( '.mystickybar-back-button').removeClass( 'disabled' );
+				$( '.mystickybar-next-button').addClass( 'disabled' );
+				$('#mystickybar-display-rules').addClass( 'mystickybar-tab-completed' );
+				$( '#mystickybar-widget-body-tab .mystickybar-preview-section').hide();				
+			}
+		});
+		
+		/*
+		 * Next Button
+		 */
+		$( document ).on( 'click', '.mystickybar-tabs-buttons .mystickybar-next-button', function(){
+			let tab_index 	= $('.mystickybar-tab.mystickybar-tab-active').data( 'tab-index' ) + 1;			
+			let tab_id 		= $('.mystickybar-tab[data-tab-index="'+ tab_index+'"]').attr( 'id' );
+			$( '#' +tab_id ).trigger( 'click' );
+		});
+		
+		/*
+		 * Back Button
+		 */
+		$( document ).on( 'click', '.mystickybar-tabs-buttons .mystickybar-back-button', function(){
+			let tab_index 	= $('.mystickybar-tab.mystickybar-tab-active').data( 'tab-index' ) - 1;			
+			let tab_id 		= $('.mystickybar-tab[data-tab-index="'+ tab_index+'"]').attr( 'id' );
+			$( '#' +tab_id ).trigger( 'click' );
+		});
+		
+		$( document ).on( 'click', '.mysticky-welcomebar-preview-wrap.mysticky-welcomebar-full-screen-preview-body .mysticky-welcomebar-close', function(){
+			$( '.welcomebar-minimise-screen-btn' ).trigger( 'click' );
+		});
+		
+		$( document).on("change", "#mysticky-welcomebar-postion-relative-text", function(){
+			let button_text_postion = $('input[name="mysticky_option_welcomebar[mysticky_welcomebar_button_text_postion]"]:checked').val();
+			if( $(this).prop("checked") == true ){
+				$("#mysticky-welcomebar-button-text-postion").show();				
+				$('.mysticky-welcomebar-preview-screen .mysticky-welcomebar-fixed-wrap').addClass( 'mysticky-welcomebar-position-' + button_text_postion );
+			}else{
+				$("#mysticky-welcomebar-button-text-postion").hide();
+				$('.mysticky-welcomebar-preview-screen .mysticky-welcomebar-fixed-wrap').removeClass( 'mysticky-welcomebar-position-' + button_text_postion );
+			}
+		});
+		
+		$( document).on("change", 'input[name="mysticky_option_welcomebar[mysticky_welcomebar_button_text_postion]"]', function(){
+			let button_text_postion = $( this ).val();
+			
+			$('.mysticky-welcomebar-preview-screen .mysticky-welcomebar-fixed-wrap').removeClass( 'mysticky-welcomebar-position-center mysticky-welcomebar-position-left mysticky-welcomebar-position-right '  );
+			
+			$('.mysticky-welcomebar-preview-screen .mysticky-welcomebar-fixed-wrap').addClass( 'mysticky-welcomebar-position-' + button_text_postion );
 		});
 		
 	});

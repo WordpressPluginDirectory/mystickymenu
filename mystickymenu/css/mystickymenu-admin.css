@@ -1419,6 +1419,7 @@ display:none;
 }
 .mysticky-welcomebar-fixed.mysticky-welcomebar-showx-desktop .mysticky-welcomebar-close {
     display: inline-block;
+	cursor: pointer;
 }		
 /* tooltip css */
 .tooltip {

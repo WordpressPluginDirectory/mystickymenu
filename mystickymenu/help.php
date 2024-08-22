@@ -26,7 +26,7 @@
     </form>
 </div>
 <div class="mystickymenu-help-btn">
-    <a class="mystickymenu-help-tooltip" href="javascript:;"><img src="<?php echo esc_url(MYSTICKYMENU_URL) ?>images/owner.png)" alt="<?php echo esc_html__("Need help?", "mystickymenu") ?>"  /></a>
+    <a class="mystickymenu-help-tooltip" href="javascript:;"><img src="<?php echo esc_url(MYSTICKYMENU_URL) ?>images/owner.png" alt="<?php echo esc_html__("Need help?", "mystickymenu") ?>"  /></a>
 	<?php if ( !isset($_COOKIE['mse-help-cta'])):?>
     <span class="tooltiptext"><?php echo esc_html__("Need help?", "mystickymenu") ?></span>
 	<?php endif;?>

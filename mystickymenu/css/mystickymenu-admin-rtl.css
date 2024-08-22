@@ -2384,7 +2384,8 @@ transform: rotate(180deg);
 font-size: 27px;
 }
 .mysticky-welcomebar-fixed.mysticky-welcomebar-showx-desktop .mysticky-welcomebar-close {
-display: inline-block;
+	display: inline-block;
+	cursor: pointer;
 }   
 
 .mysticky-welcomebar-fixed .mysticky-welcomebar-btn {
@@ -2400,6 +2401,7 @@ display: inline-block;
 }
 .mysticky-welcomebar-fixed.mysticky-welcomebar-showx-desktop .mysticky-welcomebar-close {
 	display: inline-block;
+	cursor: pointer;
 }
 
 

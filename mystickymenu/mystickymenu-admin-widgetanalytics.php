@@ -18,7 +18,7 @@ if (defined('ABSPATH') === false) {
         <div class="px-7 py-8 flex-1">
             <h2 class="mystickymenu-widgetanalytic-heading"><?php _e("Unlock My Sticky Bar <span>Analytics</span> 🚀", "mystickymenu") ?></h2>
 			
-			<div class="flex items-center mt-5 space-x-3">
+			<div class="flex items-center content-center mt-5 space-x-3">
                 <a class="btn rounded-lg drop-shadow-3xl font-normal" href="<?php echo esc_url(admin_url("admin.php?page=my-stickymenu-upgrade")) ?>" title="Upgrade to Pro">
                     <?php esc_html_e('Upgrade to Pro 🚀', 'Mystickymenu'); ?>
                 </a>                
@@ -29,7 +29,7 @@ if (defined('ABSPATH') === false) {
 			</div>
 			
 			<h3><?php esc_html_e( 'What can you use it for?', 'mystickymenu');?></h3>
-            <ul class="mt-7 flex flex-col space-y-2">
+            <ul class="mt-7 flex flex-col space-y-2 content-center">
                 <li class="flex items-center py-6 px-7 bg-[#F9FAFB] rounded-md space-x-6 text-cht-gray-150 text-lg font-primary">
                     <img width="42" height="59" src="<?php echo esc_url(MYSTICKYMENU_URL) ?>/images/channel-discover.svg" alt="Channel Discover">
                     <span class="max-w-[305px]"><?php _e("<strong>Discover</strong> the most frequently used channels", "mystickymenu") ?></span>
@@ -44,7 +44,7 @@ if (defined('ABSPATH') === false) {
                 </li>
             </ul>
 
-            <div class="flex items-center mt-5 space-x-3">
+            <div class="flex items-center mt-5 space-x-3 content-center">
                 <a class="btn rounded-lg drop-shadow-3xl font-normal" href="<?php echo esc_url(admin_url("admin.php?page=my-stickymenu-upgrade")) ?>" title="Upgrade to Pro">
                     <?php esc_html_e('Upgrade to Pro 🚀', 'Mystickymenu'); ?>
                 </a>                

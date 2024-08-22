@@ -1,18 +1,18 @@
 <?php
 /*
-Plugin Name: myStickymenu
+Plugin Name: My Sticky Bar
 Plugin URI: https://premio.io/
-Description: Simple sticky (fixed on top) menu implementation for navigation menu and Welcome bar for announcements and promotion. After install go to Settings / myStickymenu and change Sticky Class to .your_navbar_class or #your_navbar_id.
-Version: 2.7.5
+Description: Create a notification bar for your website with My Sticky Bar. You can customize the design, collect leads, and enjoy other advanced features. You can also make your menu sticky using My Sticky Bar.
+Version: 2.7.6
 Author: Premio
 Author URI: https://premio.io/downloads/mystickymenu/
 Text Domain: mystickymenu
 Domain Path: /languages
-License: GPLv2 or later
+License: GPLv3
 */
 
 defined('ABSPATH') or die("Cannot access pages directly.");
-define( 'MYSTICKY_VERSION', '2.7.5' );
+define( 'MYSTICKY_VERSION', '2.7.6' );
 define('MYSTICKYMENU_URL', plugins_url('/', __FILE__));  // Define Plugin URL
 define('MYSTICKYMENU_PATH', plugin_dir_path(__FILE__));  // Define Plugin Directory Path
 
@@ -345,6 +345,9 @@ class MyStickyMenuBackend
 
 		wp_enqueue_style('mystickymenuAdminStyle', plugins_url('/css/mystickymenu-admin.css', __FILE__), array(), MYSTICKY_VERSION );
 		wp_style_add_data( 'mystickymenuAdminStyle', 'rtl', 'replace' );
+		wp_enqueue_style('mystickybar-style', plugins_url('/css/mystickybar-admin.css', __FILE__), array(), MYSTICKY_VERSION );
+		wp_style_add_data( 'mystickybar-style', 'rtl', 'replace' );
+		
 		wp_enqueue_style('mystickymenuHelpStyle', plugins_url('/css/mystickymenu-help.css', __FILE__), array(), MYSTICKY_VERSION );
 		wp_style_add_data( 'mystickymenuHelpStyle', 'rtl', 'replace' );
 		wp_enqueue_style( 'wp-color-picker' );				
@@ -428,6 +431,26 @@ class MyStickyMenuBackend
 			'my-stickymenu-new-welcomebar',				
 			array( $this, 'mystickystickymenu_admin_new_welcomebar_page' )
 		);
+		
+		if( class_exists( 'POPTIN_Plugin_Base' ) ) {
+			add_submenu_page(
+				'my-stickymenu-welcomebar',
+				'Settings Admin',
+				'Poptin Popups',
+				'manage_options',
+				'manage-poptin-plugin',
+				array( $this, 'mystickymenu_manage_poptin_plugin' )
+			);
+		} else {
+			add_submenu_page(
+				'my-stickymenu-welcomebar',
+				'Settings Admin',
+				'Poptin Popups',
+				'manage_options',
+				'install-poptin-plugin',
+				array( $this, 'mystickymenu_install_poptin_plugin' )
+			);
+		}
 
 		add_submenu_page(
 			'my-stickymenu-welcomebar',
@@ -1027,11 +1050,11 @@ class MyStickyMenuBackend
 			return;
 		} 
 		
+		
 		/* 
 			DATE : 2022-08-04
 			Welcome bar save data function
-		*/
-		
+		*/		
 		if (isset($_POST['mysticky_option_welcomebar']) && !empty($_POST['mysticky_option_welcomebar']) && isset($_POST['nonce'])) {
 			if(!empty($_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'mysticky_option_welcomebar_update')) {		
 				
@@ -1093,7 +1116,7 @@ class MyStickyMenuBackend
 				
 				$this->mysticky_clear_all_caches();				
 				
-				if( isset($_POST['submit']) && $_POST['submit'] == 'SAVE & VIEW DASHBOARD'){
+				if(isset($_POST['submit']) && ( $_POST['submit'] == 'SAVE & VIEW DASHBOARD' || $_POST['submit']== '' ) ){
 					if ( isset($is_first_widget) && $is_first_widget == 1 ) { ?>
 						<script>
 						window.location.href = '<?php echo admin_url("admin.php?page=my-stickymenu-welcomebar&first_widget=".$is_first_widget);?>';
@@ -1166,7 +1189,7 @@ class MyStickyMenuBackend
 					
 					$welcomebars_widgets = get_option( 'mysticky_option_welcomebar' );
 					if ( !isset($_GET['widget']) && isset( $_GET['page'] ) && $_GET['page'] == 'my-stickymenu-welcomebar' ) {
-						include_once( 'stickymenu-dashboard.php');
+						include_once( 'admin/stickymenu-dashboard.php');
 					}elseif ( !isset($_GET['isedit']) && !isset($_GET['save']) && isset($welcomebars_widgets) && !empty($welcomebars_widgets) ) {
 						?>
 						<div id="mystickymenu" class="wrap mystickymenu mystickymenu-new-widget-wrap">		 
@@ -1174,7 +1197,8 @@ class MyStickyMenuBackend
 						</div>
 						<?php
 					}else{
-						mysticky_welcome_bar_backend(); 	
+						include_once( 'admin/bar-settings.php');
+						//mysticky_welcome_bar_backend(); 	
 					}
 					
 					if( isset($_GET['first_widget']) && $_GET['first_widget'] == 1 ) : ?>
@@ -1231,12 +1255,25 @@ class MyStickyMenuBackend
 		}else{ ?>
 			<div id="mystickymenu" class="wrap mystickymenu">
 				<div id="sticky-header-welcome-bar" class="sticky-header-content">
-					<?php mysticky_welcome_bar_backend(); ?>
+					<?php 
+					include_once( 'admin/bar-settings.php');
+					//mysticky_welcome_bar_backend(); ?>
 				</div>
 			</div>
 			<?php
 		}
 		
+	}
+	public function mystickymenu_manage_poptin_plugin() {
+		?>
+			<script>
+				window.location.href= '<?php echo admin_url( "admin.php?page=Poptin" )?>'
+			</script>
+			<?php
+			exit;
+	}
+	public function mystickymenu_install_poptin_plugin() {
+		include_once 'admin/poptin-plugin.php';
 	}
 	public function mystickymenu_admin_widget_analytics_page(){
 		
@@ -2298,13 +2335,62 @@ function mystickymenu_admin_init(){
 	}
 }
 
+function mystickymenu_change_menu_text() {
+    global $submenu;
+    if(isset($submenu['my-stickymenu-welcomebar'])) {
+        $totalItems = count($submenu['my-stickymenu-welcomebar'])-1;
+        if(isset($submenu['my-stickymenu-welcomebar'][$totalItems][0])) {
+            $submenu['my-stickymenu-welcomebar'][$totalItems][0] = '<span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.0518 4.01946C12.9266 3.91499 12.7747 3.84781 12.6132 3.82557C12.4517 3.80333 12.2872 3.82693 12.1385 3.89367L9.3713 5.12414L7.76349 2.22571C7.68664 2.09039 7.5753 1.97785 7.44081 1.89956C7.30632 1.82127 7.15348 1.78003 6.99786 1.78003C6.84224 1.78003 6.6894 1.82127 6.55491 1.89956C6.42042 1.97785 6.30908 2.09039 6.23224 2.22571L4.62442 5.12414L1.85724 3.89367C1.70822 3.82703 1.54352 3.8034 1.38178 3.82545C1.22003 3.84751 1.06768 3.91437 0.941941 4.01849C0.816207 4.1226 0.722106 4.25982 0.670275 4.41461C0.618444 4.56941 0.610951 4.73562 0.648642 4.89446L2.0377 10.8171C2.06427 10.9318 2.11383 11.0399 2.18339 11.1348C2.25295 11.2297 2.34107 11.3096 2.44239 11.3695C2.57957 11.4516 2.73642 11.495 2.8963 11.4952C2.97402 11.4951 3.05133 11.484 3.12599 11.4624C5.65792 10.7624 8.33233 10.7624 10.8643 11.4624C11.0955 11.5232 11.3413 11.4898 11.5479 11.3695C11.6498 11.3103 11.7384 11.2307 11.8081 11.1357C11.8777 11.0406 11.9269 10.9321 11.9525 10.8171L13.3471 4.89446C13.3843 4.73558 13.3764 4.56945 13.3243 4.41482C13.2721 4.2602 13.1777 4.12326 13.0518 4.01946V4.01946Z" fill="white"/>
+</svg></span> '.esc_html__( 'Upgrade to Pro' , 'chaty');
+        }
+    }
+}
+add_action('admin_init', 'mystickymenu_change_menu_text');
+
 add_action('admin_footer', 'mystickymenu_admin_footer_style');
 function mystickymenu_admin_footer_style() {
 	?>
 	<style>
-	#adminmenu li.toplevel_page_my-stickymenu-welcomebar ul.wp-submenu.wp-submenu-wrap li:last-child a {
-	  color: #EA33F7;
-	}
+    #adminmenu .toplevel_page_my-stickymenu-welcomebar > ul > li:last-child {
+        padding: 5px 10px;
+    }
+    #adminmenu .toplevel_page_my-stickymenu-welcomebar > ul > li:last-child a {
+        display: flex;
+        background-color: #B78DEB;
+        border-radius: 6px;
+        font-size: 12px;
+        gap: 4px;
+        padding: 4px 8px;
+        color: #ffffff;
+        align-items: center;
+        transition: all 0.2s linear;
+        font-weight: normal;
+        box-shadow: 0px 6px 8px 0px #B78DEB3D;
+        justify-content: center;
+    }
+    #adminmenu .toplevel_page_my-stickymenu-welcomebar > ul > li:last-child a:hover, #adminmenu .toplevel_page_my-stickymenu-welcomebar > ul > li:last-child a.current {
+        box-shadow: 0px 6px 8px 0px #B78DEB3D;
+        color: #ffffff;
+        background-color: #9565d0;
+        font-weight: normal;
+    }
+    #adminmenu .toplevel_page_my-stickymenu-welcomebar > ul > li:last-child a span {
+        flex: 0 0 16px;
+        height: 16px;
+        background-color: #c5a4ef;
+        border-radius: 4px;
+        padding: 2px;
+        display: inline-flex;
+        transition: all 0.2s linear;
+    }
+    #adminmenu .toplevel_page_my-stickymenu-welcomebar > ul > li:last-child a:hover span {
+        background-color: #B78DEB;
+    }
+    #adminmenu .toplevel_page_my-stickymenu-welcomebar > ul > li:last-child a span svg {
+        width: 100%;
+        height: 100%;
+    }
 	</style>
 	<?php
 }

@@ -1442,6 +1442,7 @@ function mysticky_welcome_bar_backend() {
 
 function mysticky_welcomebar_pro_widget_default_fields() {
 	return array(
+			'mysticky_welcomebar_enable' 			=> '1',
 			'mysticky_welcomebar_position' 			=> 'top',
 			'mysticky_welcomebar_height' 			=> '60',
 			'mysticky_welcomebar_bgcolor' 			=> '#03ed96',
@@ -1518,6 +1519,13 @@ function mysticky_welcome_bar_frontend(){
 
 	$welcomebar['mysticky_welcomebar_show_success_message'] = (isset($welcomebar['mysticky_welcomebar_show_success_message'])) ? esc_html($welcomebar['mysticky_welcomebar_show_success_message']) : '';
 	
+	$button_postion_relative_text = (isset($welcomebar['mysticky_welcomebar_button_postion_relative_text']) ) ? esc_attr($welcomebar['mysticky_welcomebar_button_postion_relative_text']) : '';
+	$button_text_postion = (isset($welcomebar['mysticky_welcomebar_button_text_postion']) ) ? esc_attr($welcomebar['mysticky_welcomebar_button_text_postion']) : 'center';
+	$button_text_postion_clss = '';
+	if ( $button_postion_relative_text == 1 ) {
+		$button_text_postion_clss = 'mysticky-welcomebar-position-' . $button_text_postion;
+	}
+	
 	$display = ' mysticky-welcomebar-attention-'.$welcomebar['mysticky_welcomebar_attentionselect'];
 	$display_entry_effect = (isset($welcomebar['mysticky_welcomebar_entry_effect'])) ? ' mysticky-welcomebar-entry-effect-'.$welcomebar['mysticky_welcomebar_entry_effect'] : ' mysticky-welcomebar-entry-effect-slide-in';
 	$mysticky_welcomebar_display_desktop = ' mysticky-welcomebar-display-desktop';
@@ -1546,7 +1554,7 @@ function mysticky_welcome_bar_frontend(){
 
 	?>
 	<div class="mysticky-welcomebar-fixed mysticky-site-front <?php echo esc_attr($display_main_class); ?>"  data-after-triger="after_a_few_seconds" data-triger-sec="1" data-position="<?php echo esc_attr($welcomebar['mysticky_welcomebar_position']);?>" data-height="<?php echo esc_attr($welcomebar['mysticky_welcomebar_height']);?>" data-rediect="<?php echo esc_attr($welcomebar['mysticky_welcomebar_actionselect']);?>" data-aftersubmission="<?php echo esc_attr($welcomebar['mysticky_welcomebar_aftersubmission']);?>" data-show-success-message="<?php echo esc_attr($welcomebar['mysticky_welcomebar_show_success_message']);?>">
-		<div class="mysticky-welcomebar-fixed-wrap">
+		<div class="mysticky-welcomebar-fixed-wrap <?php echo esc_attr($button_text_postion_clss);?>">
 			<div class="mysticky-welcomebar-content">			
 				<?php 					
 					echo wpautop( isset($welcomebar['mysticky_welcomebar_bar_text'])? stripslashes($welcomebar['mysticky_welcomebar_bar_text']) :"Get 30% off your first purchase" );
@@ -2119,6 +2127,25 @@ function mysticky_welcome_bar_frontend_styles() {
 			-webkit-animation-name: wobble;
 			animation-name: wobble;
 		}
+
+		/* 210824 */
+		@media only screen and (min-width: 481px) {
+			.mysticky-welcomebar-fixed-wrap.mysticky-welcomebar-position-left {
+				justify-content: flex-start;
+			}
+			.mysticky-welcomebar-fixed-wrap.mysticky-welcomebar-position-center {
+				justify-content: center;
+			}
+			.mysticky-welcomebar-fixed-wrap.mysticky-welcomebar-position-right  {
+				justify-content: flex-end;
+			}
+			.mysticky-welcomebar-fixed-wrap.mysticky-welcomebar-position-left .mysticky-welcomebar-content,
+			.mysticky-welcomebar-fixed-wrap.mysticky-welcomebar-position-center .mysticky-welcomebar-content,
+			.mysticky-welcomebar-fixed-wrap.mysticky-welcomebar-position-right .mysticky-welcomebar-content {
+				flex: unset;
+			}
+		}
+		
 		@media only screen and (min-width: 768px) {
 			.mysticky-welcomebar-display-desktop.mysticky-welcomebar-entry-effect-fade.entry-effect {
 				opacity: 1;
@@ -2167,6 +2194,10 @@ function mysticky_welcome_bar_frontend_styles() {
 		@media only screen and (max-width: 480px) {
 
 			.mysticky-welcomebar-fixed-wrap {padding: 15px 35px 10px 10px; flex-wrap:wrap;}
+			.mysticky-welcomebar-fixed.front-site .mysticky-welcomebar-fixed-wrap {
+				padding: 15px 20px 10px 20px;
+				flex-direction: column;
+			}
 			/*.welcombar-contact-lead .mysticky-welcomebar-fixed-wrap {flex-wrap: wrap; justify-content: center;}*/
 			
 			.mysticky-welcomebar-fixed .mystickymenu-front.mysticky-welcomebar-lead-content {margin: 10px 0 10px 20px !important;}
@@ -2174,6 +2205,7 @@ function mysticky_welcome_bar_frontend_styles() {
 			.mysticky-welcomebar-fixed .mysticky-welcomebar-btn {
 				padding-left: 10px;
 			}
+			.mysticky-welcomebar-fixed.mysticky-welcomebar-btn-mobile.front-site .mysticky-welcomebar-btn {margin-left: 0; text-align: center;}
 		}
 
 
