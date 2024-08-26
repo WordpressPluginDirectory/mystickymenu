@@ -251,9 +251,6 @@ ul.mystickybar-tabs .mystickybar-tabs-subheading {
 }
 
 /* Structure */
-#adminmenuwrap {
-    z-index: 999999;
-}
 .mystickymenu-dashboard .mystickymenu-tab-boxs-wrap {
     padding: 20px 40px;
     margin: 0;
