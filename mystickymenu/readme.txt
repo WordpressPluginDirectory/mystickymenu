@@ -2,8 +2,8 @@
 Contributors: tomeraharon, galdub, premio
 Tags:notification bar, floating bar, sticky menu, sticky header, sticky bar
 Requires at least: 3.5.1
-Tested up to: 6.6
-Stable tag: 2.7.7
+Tested up to: 6.8
+Stable tag: 2.7.9
 License: GPLv3
 
 🔔 Create a welcome notification bar for your website. Also, My Sticky Bar plugin can make your menu or header sticky to the top when scrolled 📌
@@ -14,12 +14,9 @@ License: GPLv3
 
 <strong>Use My Sticky Bar to create a beautiful notification bar for your website. You can also use this notification bar & sticky menu plugin to make your menu or header sticky on top of page, after desired number of pixels when scrolled. You can use it also to create a Welcome bar for announcements, promotion and more. This lightweight plugin will help your visitors navigate easily and reach to the navigation menu without wasting time. Install My Sticky Bar and improve your website’s user experience! If you want to change the CSS style, disable on scroll down or disable on specific pages. check out the <a href="https://premio.io/downloads/mystickymenu/" target="_blank" title="My Sticky Bar pro plans">Pro version</a>.</strong>
 
-
-By default, My Sticky Bar should make your menu sticky without any adjustments on your end - which means your menu should become sticky right out of the box. Sticky menu is designed to use element class ".navbar" as "Sticky Class". That value should be modified in plugin settings for different themes to make it work. Sticky Class is actually nothing more than an element class (or id) of the element that should become sticky.
-
+By default, My Sticky Bar should make your menu sticky right away if you turn the sticky menu feature on - which means your menu should become sticky right out of the box. Sticky menu is designed to use element class ".navbar" as "Sticky Class". That value should be modified in plugin settings for different themes to make it work. Sticky Class is actually nothing more than an element class (or id) of the element that should become sticky.
 
 [youtube  https://www.youtube.com/watch?v=l9aRnPVuCVY]
-
 
 <strong>📢 Welcome Notification Bar:</strong> Use this powerful feature to create a beautiful floating sticky notification bar. No coding skill required, just turn it on, set up your announcement text and button, and voilà - your top notification bar is good to go! 
 
@@ -30,15 +27,11 @@ By default, My Sticky Bar should make your menu sticky without any adjustments o
 * Create your own floating Welcome Bar and let your visitors know about your latest deals, announcements, or any other important information
 * The My Sticky Bar dashboard makes it easy for you to manage your top bars and sticky menus in one place!
 
-
 The sticky header function is localized (multi-language support) and responsive (as far as your theme is). Also, there is the possibility to add custom CSS code which makes this plugin very flexible, customizable, and user-friendly. You can also use the notification bar in any language.
 
-
-My Sticky Bar plugin is originally designed for Twenty Thirteen template but should work on any theme, like OceanWP, Nirvana Template, Travelify, Twenty Sixteen, Twenty Ten, Twenty Eleven, Max Magazine, Graduate, Lawyer theme, Spacious, Suits, and more.
-
+My Sticky Bar plugin is originally designed for Twenty Thirteen template but should work on any theme, like OceanWP, Nirvana Template, Twenty Sixteen, Twenty Ten, Twenty Eleven, Twenty Twenty-Five, Twenty Twenty-Four, Twenty Twenty-Three, Max Magazine, Graduate, Lawyer theme, Spacious, Suits, and more.
 
 My Sticky Bar is tested and compatible with Elementor website builder, Divi, WPBakery, Gutenberg, Visual composer, Beaver, and other WordPress website builders.
-
 
 = 🚀 WITH WELCOME BAR FEATURES YOU CAN: =
 * Display your floating bar at the top position
@@ -54,9 +47,8 @@ My Sticky Bar is tested and compatible with Elementor website builder, Divi, WPB
 * Show the call-to-action button in your top notification bar on desktop/mobile
 * Redirect your visitors to another URL on-click
 
-
 = 📌 WITH MY STICKY BAR YOU CAN: =
-* Show sticky header on scroll down/up
+* Show sticky header when scrolling the page
 * Fade or slide effect
 * Disable at a small screen
 * Choose when to make visible on scroll
@@ -71,7 +63,6 @@ My Sticky Bar is tested and compatible with Elementor website builder, Divi, WPB
 * New! Disable the sticky menu - You now have the option to disable sticky menu features if you want to use only top bars or welcome bars
 * Many of our users use the welcome bar to announce about their Coronavirus COVID-19 updates. You can use the notification bar as a Corona Virus - COVID-19 banner to make sure your visitors are up-to-date.
 
-
 = 👌 Welcome Bar Pro Features =
 * Multi Welcome Bar - Create a separate notification bar for different pages based on page targeting rules (E.g. separate notification bar for different languages, different product categories, and much more)
 * New! Countdown timer ⏳ -  Add a countdown timer in your notification bar for that much-needed sense of urgency. This new countdown timer notifications bar feature can really increase your conversion rate because it creates a sense of scarcity and urgency on your promotions.
@@ -83,14 +74,12 @@ My Sticky Bar is tested and compatible with Elementor website builder, Divi, WPB
 * Open redirect link in a new tab
 * Show your notification bar just on mobile or desktop
 * Show your notification bar on a scroll or after a few seconds
-* Set an expiry date for your welcome bar, including settings a timezone
+* Set an expiry date for your welcome bar, including settings a time zone
 * Display your floating notification bar on specific pages
 * You can set a thank you screen which appears after the button is clicked (can be used for coupons or any other message you want to show your visitors after they click on the button)
 * Add a rel Attribute to your notification bar button
 
-
 But wait, there's more 😉
-
 
 = 🔥 WHAT DO YOU GET IN THE PRO PLAN =
 * Disable floating menu on Desktop/Mobile
@@ -98,9 +87,7 @@ But wait, there's more 😉
 * Add CSS style to the floating header
 * Disable/enable floating header on specific pages
 
-
 <a href="https://premio.io/downloads/mystickymenu/" target="_blank" title="My Sticky Bar pro plans"><strong>>>> See Pro plans here 🚀</strong></a> 
-
 
 = Live Demo =
 A live demo for My Sticky Bar plugin and notification bar is available at <a href="https://demo.premio.io/mystickymenu/?utm_source=wordpressorg" target="_blank" title="Premio.io demo site">Premio's demo site</a>.
@@ -117,7 +104,7 @@ We don’t store any local data about your visitors. Any time your menu or notif
 <strong>Pro tip:</strong> You can use the plugin's notification bar to let your website's visitors know about your cookie policy :)
 
 = 📧 Grow your email list using the notification bar contact form =
-Collect valuable visitor information from your website, by giving them access to a contact from any time anywhere. The notification bar contact form helps you get leads into your local database. Use these leads to create highly effective marketing campaigns and to contact your website visitors. Using the contact form in combination with features like a countdown, coupons, etc gives you a powerful way to convince users to share their lead information with you. 
+Collect valuable visitor information from your website, by giving them access to a contact from any time anywhere. The notification bar contact form helps you get leads into your local database. Create effective marketing campaigns and to contact your website visitors. Using the contact form in combination with features like a countdown, coupons, etc gives you a powerful way to convince users to share their lead information with you. 
 
 When a visitor fills in their details (email, phone, name etc) on the welcome bar, if you’re using the Pro version you can get the lead sent to your email.
 
@@ -370,6 +357,12 @@ After installing the plugin, you’ll have the option to turn on the welcome bar
 
 
 == Changelog ==
+
+= 2.7.9 =
+Preview bug fixed
+
+= 2.7.8 =
+Internal UI improvement
 
 = 2.7.7 =
 WordPress admin panel CSS bug fixed
